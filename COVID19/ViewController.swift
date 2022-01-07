@@ -16,12 +16,20 @@ class ViewController: UIViewController {
     @IBOutlet var totalCaseLabel: UILabel!
     @IBOutlet var newCaseLabel: UILabel!
     @IBOutlet var pieChartView: PieChartView!
+    @IBOutlet var labelStackView: UIStackView!
+    @IBOutlet var indicatorView: UIActivityIndicatorView!
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        indicatorView.startAnimating()
         fetchCovidOverView(completionHandler: { [weak self] result in
             guard let self = self else { return }
+            self.indicatorView.stopAnimating()
+            self.indicatorView.isHidden = true
+            self.labelStackView.isHidden = false
+            self.pieChartView.isHidden = false
+            
             switch result {
             case let .success(result) :
                 self.configureStackView(koreaCovidOverView: result.korea)
@@ -83,6 +91,8 @@ class ViewController: UIViewController {
     }
 
     func configureChartView(covidOverViewList: [CovidOverView]){
+        pieChartView.delegate = self
+        
         let entries = covidOverViewList.compactMap { [weak self] overview -> PieChartDataEntry? in
             guard let self = self else { return nil }
             return PieChartDataEntry(value: self.removeformatString(string: overview.newCase),
@@ -117,3 +127,11 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: ChartViewDelegate {
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        guard let covidDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "CovidDetailViewController") as? CovidDetailViewController else { return }
+        guard let covidOverView = entry.data as? CovidOverView else { return }
+        covidDetailViewController.covidOverView = covidOverView
+        navigationController?.pushViewController(covidDetailViewController, animated: true)
+    }
+}
