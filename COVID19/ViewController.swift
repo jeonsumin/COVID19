@@ -6,9 +6,16 @@
 //
 
 import UIKit
+import Charts
 
 class ViewController: UIViewController {
 
+    //MARK: - Properties
+    @IBOutlet var totalCaseLabel: UILabel!
+    @IBOutlet var newCaseLabel: UILabel!
+    @IBOutlet var pieChartView: PieChartView!
+    
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
