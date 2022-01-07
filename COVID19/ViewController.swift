@@ -24,7 +24,9 @@ class ViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case let .success(result) :
-                debugPrint("success : \(result)")
+                self.configureStackView(koreaCovidOverView: result.korea)
+                let covidOverViewList = self.makeCovidOverViewList(cityCovidOverView: result)
+                self.configureChartView(covidOverViewList: covidOverViewList)
             case let .failure(error):
                 debugPrint("error : \(error )")
             }
@@ -53,8 +55,65 @@ class ViewController: UIViewController {
                     completionHandler(.failure(error))
                 }
             })
-        
+    }
+    
+    func configureStackView(koreaCovidOverView: CovidOverView){
+        totalCaseLabel.text = "\(koreaCovidOverView.totalCase) 명"
+        newCaseLabel.text = "\(koreaCovidOverView.newCase) 명"
+    }
+    
+    func makeCovidOverViewList(cityCovidOverView: CityCovidOverView) -> [CovidOverView] {
+        return [
+            cityCovidOverView.seoul,
+            cityCovidOverView.busan,
+            cityCovidOverView.daegu,
+            cityCovidOverView.incheon,
+            cityCovidOverView.gwangju,
+            cityCovidOverView.daegu,
+            cityCovidOverView.daejeon,
+            cityCovidOverView.ulsan,
+            cityCovidOverView.sejong,
+            cityCovidOverView.gyeonggi,
+            cityCovidOverView.chungbuk,
+            cityCovidOverView.chungnam,
+            cityCovidOverView.gyeongbuk,
+            cityCovidOverView.gyeongnam,
+            cityCovidOverView.jeju,
+        ]
     }
 
+    func configureChartView(covidOverViewList: [CovidOverView]){
+        let entries = covidOverViewList.compactMap { [weak self] overview -> PieChartDataEntry? in
+            guard let self = self else { return nil }
+            return PieChartDataEntry(value: self.removeformatString(string: overview.newCase),
+                                     label: overview.countryName,
+                                     data: overview)
+        }
+        let dataSet = PieChartDataSet(entries: entries, label: "코로나 발생 현황")
+        
+        dataSet.sliceSpace = 1
+        dataSet.entryLabelColor = .black
+        dataSet.valueTextColor = .black
+        dataSet.xValuePosition = .outsideSlice
+        dataSet.valueLinePart1OffsetPercentage = 0.8
+        dataSet.valueLinePart1Length = 0.2
+        dataSet.valueLinePart2Length = 0.3
+        
+        dataSet.colors = ChartColorTemplates.vordiplom() +
+        ChartColorTemplates.joyful() +
+        ChartColorTemplates.liberty() +
+        ChartColorTemplates.pastel() +
+        ChartColorTemplates.material()
+        
+        self.pieChartView.data = PieChartData(dataSet: dataSet)
+        
+        self.pieChartView.spin(duration: 0.3, fromAngle: self.pieChartView.rotationAngle, toAngle: self.pieChartView.rotationAngle + 80)
+    }
+    
+    func removeformatString(string: String) -> Double {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.number(from: string)?.doubleValue ?? 0
+    }
 }
 
