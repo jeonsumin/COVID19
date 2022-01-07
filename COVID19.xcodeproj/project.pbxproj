@@ -15,6 +15,7 @@
 		DE4AF59227880877005A54ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE4AF59127880877005A54ED /* Assets.xcassets */; };
 		DE4AF59527880877005A54ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE4AF59327880877005A54ED /* LaunchScreen.storyboard */; };
 		DE7A3C3B27880E6D006ABF7B /* CovidDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7A3C3A27880E6D006ABF7B /* CovidDetailViewController.swift */; };
+		DE7A3C3D278810D1006ABF7B /* CityCovidOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7A3C3C278810D1006ABF7B /* CityCovidOverView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		DE4AF59427880877005A54ED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE4AF59627880877005A54ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE7A3C3A27880E6D006ABF7B /* CovidDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CovidDetailViewController.swift; sourceTree = "<group>"; };
+		DE7A3C3C278810D1006ABF7B /* CityCovidOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCovidOverView.swift; sourceTree = "<group>"; };
 		DF163121890B3B5EA297E93A /* Pods-COVID19.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-COVID19.release.xcconfig"; path = "Target Support Files/Pods-COVID19/Pods-COVID19.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,6 +79,7 @@
 				DE4AF58A27880876005A54ED /* SceneDelegate.swift */,
 				DE4AF58C27880876005A54ED /* ViewController.swift */,
 				DE4AF58E27880876005A54ED /* Main.storyboard */,
+				DE7A3C3C278810D1006ABF7B /* CityCovidOverView.swift */,
 				DE7A3C3A27880E6D006ABF7B /* CovidDetailViewController.swift */,
 				DE4AF59127880877005A54ED /* Assets.xcassets */,
 				DE4AF59327880877005A54ED /* LaunchScreen.storyboard */,
@@ -211,6 +214,7 @@
 			files = (
 				DE4AF58D27880876005A54ED /* ViewController.swift in Sources */,
 				DE7A3C3B27880E6D006ABF7B /* CovidDetailViewController.swift in Sources */,
+				DE7A3C3D278810D1006ABF7B /* CityCovidOverView.swift in Sources */,
 				DE4AF58927880876005A54ED /* AppDelegate.swift in Sources */,
 				DE4AF58B27880876005A54ED /* SceneDelegate.swift in Sources */,
 			);
