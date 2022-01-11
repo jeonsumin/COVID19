@@ -22,9 +22,14 @@ class ViewController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        //데이터 세팅 전 indicator 실행
         indicatorView.startAnimating()
+
+        // Alamofire를 통해서 COVID19 API 호출하여 화면에 세팅
         fetchCovidOverView(completionHandler: { [weak self] result in
+            //self 참조
             guard let self = self else { return }
+
             self.indicatorView.stopAnimating()
             self.indicatorView.isHidden = true
             self.labelStackView.isHidden = false
@@ -34,6 +39,7 @@ class ViewController: UIViewController {
             case let .success(result) :
                 self.configureStackView(koreaCovidOverView: result.korea)
                 let covidOverViewList = self.makeCovidOverViewList(cityCovidOverView: result)
+                // 차트 구성
                 self.configureChartView(covidOverViewList: covidOverViewList)
             case let .failure(error):
                 debugPrint("error : \(error )")
@@ -42,12 +48,13 @@ class ViewController: UIViewController {
     }
 
     //MARK: - function
+                                                //@escaping Escaping 클로저는 클로저가 함수의 인자로 전달됐을 때, 함수의 실행이 종료된 후 실행되는 클로저 
     func fetchCovidOverView(completionHandler: @escaping (Result<CityCovidOverView, Error>) -> Void){
         let url = "https://api.corona-19.kr/korea/country/new/"
         let param = [
             "serviceKey" : "Hxvb51O8IgnKJiU4fRAcLmjoBswCh97da"
         ]
-        
+        //Alamofire를 활용하여 COVID19 API 통신 
         AF.request(url, method: .get, parameters: param)
             .responseData(completionHandler: { response in
                 switch response.result {
@@ -69,7 +76,7 @@ class ViewController: UIViewController {
         totalCaseLabel.text = "\(koreaCovidOverView.totalCase) 명"
         newCaseLabel.text = "\(koreaCovidOverView.newCase) 명"
     }
-    
+    // 차트에 사용될 COVID List 세팅
     func makeCovidOverViewList(cityCovidOverView: CityCovidOverView) -> [CovidOverView] {
         return [
             cityCovidOverView.seoul,
@@ -90,6 +97,7 @@ class ViewController: UIViewController {
         ]
     }
 
+    //차트 구성
     func configureChartView(covidOverViewList: [CovidOverView]){
         pieChartView.delegate = self
         
@@ -126,8 +134,9 @@ class ViewController: UIViewController {
         return formatter.number(from: string)?.doubleValue ?? 0
     }
 }
-
+// Chart Delegate를 채택
 extension ViewController: ChartViewDelegate {
+    //차트 선택시 디테일 뷰로 이동할 수 있도록 설정
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         guard let covidDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "CovidDetailViewController") as? CovidDetailViewController else { return }
         guard let covidOverView = entry.data as? CovidOverView else { return }
